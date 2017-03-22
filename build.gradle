@@ -1,0 +1,70 @@
+group = 'org.oficina24x7'
+description = 'Recipient Exceptions'
+version = '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'checkstyle'
+
+sourceCompatibility = 1.5
+targetCompatibility = 1.5
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': description,
+                   'Implementation-Version': version
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "http://repo.spring.io/release" }
+}
+
+checkstyle {
+    configFile file('google_checks.xml')
+    toolVersion '7.1'
+    showViolations = true
+}
+
+configurations.all {
+    //Using SLF4J
+    exclude group: "commons-logging", module: "commons-logging"
+}
+
+dependencies {
+    testCompile("junit:junit:4.12")
+}
+
+//Maven compatibility task:
+task writePom {    
+  doLast {  
+    pom {
+        project {
+            inceptionYear '2016'    
+            properties {
+                "project.build.sourceEncoding" "UTF-8"
+                "checkstyle.config.location" "google_checks.xml"
+                "checkstyle.consoleOutput" "true"
+            }            
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+            reporting  {
+                plugins {
+                    plugin {
+                        groupId "org.apache.maven.plugins"
+                        artifactId "maven-checkstyle-plugin"
+                        version "2.17"
+                    }                   
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+  }
+}
