@@ -1,0 +1,11 @@
+- Add CallingFunctionRecipient:
+  "CallingFunctionRecipient" is an exception that is supposed to be 
+  handled by the calling function. Its actually a CheckedException but more pedagogic.
+  Actually is not really an Exception and must be used just for long-lasting 
+  (I/O or CPU intensive) functions.
+  - Try to generalize maybe to:
+    - ControllerLayerRecipient:
+    - BusinessLogicRecipient:
+    - ServiceLogicRecipient:
+    That is, different recipients inside the (micro)process.
+
